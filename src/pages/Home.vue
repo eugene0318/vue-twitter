@@ -70,14 +70,10 @@
     </div>
   </div>
   <!--trend section-->
-  <Trends />
 </template>
 <script>
-import Trends from "../components/Trends.vue";
 export default {
-  components: {
-    Trends,
-  },
+  components: {},
 };
 </script>
 <style lang=""></style>

@@ -1,4 +1,5 @@
 <template lang="">
+  <!--notifications---->
   <div class="flex-1 border-r border-gray-100 flex flex-col overflow-y-auto">
     <!--title-->
     <dic class="p-3 font-bold text-lg border-b border-gray-100">알림</dic>
@@ -24,6 +25,7 @@
       </div>
     </div>
   </div>
+  <!--trends-->
   <Trends />
 </template>
 <script>
