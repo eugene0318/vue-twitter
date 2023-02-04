@@ -7,10 +7,10 @@
     />
     <div class="ml-3 flex-1 flex flex-col space-y-1">
       <div class="text-sm space-x-1">
-        <spna class="font-bold">엽rl</spna>
-        <spna class="text-gray-500 text-xs">@yeopon</spna>
+        <span class="font-bold">엽rl</span>
+        <span class="text-gray-500 text-xs">@yeopon</span>
         <span>·</span>
-        <spna class="text-gray-500 text-xs">57분</spna>
+        <span class="text-gray-500 text-xs">57분</span>
       </div>
       <!--tweet body-->
       <div>진짜 이 날 코디 레전드다</div>

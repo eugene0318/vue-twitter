@@ -27,7 +27,7 @@
         </div>
       </div>
       <!--tweets-->
-      <Tweet />>
+      <Tweet v-for="tweet in 5" />>
     </div>
   </div>
   <!--trend section-->

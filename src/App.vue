@@ -9,54 +9,62 @@
         <i class="fa-brands fa-twitter text-2xl text-dark xl:ml-4 mb-3"></i>
         <!---sidemenu icons-->
         <div class="flex flex-col items-start">
-          <div
+          <router-link
+            to="/"
             class="hover:text-primary hover:bg-lighter px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-house fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">홈</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-hashtag fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">탐색하기</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/notifications"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-bell fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">알림</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/messages"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-envelope fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">쪽지</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-bookmark fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">북마크</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-list-alt fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">리스트</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/profile"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-user fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">프로필</span>
-          </div>
-          <div
+          </router-link>
+          <router-link
+            to="/"
             class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
           >
             <i class="fa-solid fa-ellipsis-h fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">더보기</span>
-          </div>
+          </router-link>
         </div>
         <!--twit button-->
         <div class="w-full xl:pr-3">
@@ -94,21 +102,17 @@
       </div>
     </div>
     <!--main section-->
-    <div class="flex-1 flex h-screen"><Profile /></div>
+    <div class="flex-1 flex h-screen"><router-view /></div>
   </div>
 </template>
 
 <script>
-import Messages from "./pages/Messages.vue";
-import Home from "./pages/Home.vue";
-import Profile from "./pages/Profile.vue";
-
+import { ref } from "vue";
+// import Messages from "./pages/Messages.vue";
+// import Home from "./pages/Home.vue";
+//mport Profile from "./pages/Profile.vue";
 export default {
-  components: {
-    Home,
-    Messages,
-    Profile,
-  },
+  components: {},
   setup() {},
 };
 </script>
