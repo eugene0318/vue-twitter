@@ -10,7 +10,7 @@
           class="flex px-3 py-4 hover:bg-gray-50 border-b border-gray-100 bg-gray-100"
         >
           <img
-            src='http://picsum.photos/200"/'
+            src="http://picsum.photos/200/"
             class="w-10 h-10 rounded-full cursor-pointer mr-2"
           />
           <div>
@@ -29,7 +29,7 @@
           :key="message"
         >
           <img
-            src='http://picsum.photos/200"/'
+            src="http://picsum.photos/200/"
             class="w-10 h-10 rounded-full cursor-pointer mr-2"
           />
           <div>
