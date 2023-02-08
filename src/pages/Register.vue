@@ -50,10 +50,14 @@ export default {
     const username = ref("");
     const email = ref("");
     const password = ref("");
-    const loading = ref(true);
+    const loading = ref(false);
     const router = useRouter();
 
     const onRegister = async () => {
+      if (!username.value || !password.value || !email.value) {
+        alert("유저네임, 이메일. 비밀번홀ㄹ 모두 입력해주세요.");
+        return;
+      }
       try {
         loading.value = true;
         const { user } = await auth.createUserWithEmailAndPassword(
@@ -76,8 +80,20 @@ export default {
         alert("회원 가입에 성공하셨습니다. 로그인 해주세요.");
         router.push("/login");
       } catch (e) {
-        console.log("create user with email and password error : ", e);
-        alert(e.message);
+        switch (e.code) {
+          case "auth/invalid-email":
+            alert("잘못된 이메일입니다.");
+            break;
+          case "auth/weak-password":
+            alert("비밀번호가 너무 쉬워요.");
+            break;
+          case "auth/email-already-in-use":
+            alert("이미 가입되어있는 이메일입니다.");
+            break;
+          default:
+            alert(e.message);
+            break;
+        }
       } finally {
         loading.value = false;
       }

@@ -7,7 +7,7 @@
     ></i>
     <span class="text-2xl font-bold">뜨위터 회원가입</span>
     <input
-      v-model="username"
+      v-model="email"
       type="text"
       class="rounded w-96 px-4 py-3 border border-gray-300 focus:ring-2 focus:border-primary focus:outline-none"
       placeholder="이메일"
@@ -38,23 +38,37 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
-import { auth } from "../firebase";
+import { ref, onMounted } from "vue";
+import { auth, USER_COLLECTION } from "../firebase";
 import { useRouter } from "vue-router";
+import store from "../store";
 export default {
   setup() {
     const email = ref("");
     const password = ref("");
-    const loading = ref(true);
+    const loading = ref(false);
     const router = useRouter();
 
+    onMounted(() => {
+      console.log(store.state.user);
+    });
+
     const onLogin = async () => {
+      if (!email.value || !password.value) {
+        alert("email, 비밀번홀ㄹ 모두 입력해주세요.");
+        return;
+      }
+
       try {
         loading.value = true;
         const { user } = await auth.signInWithEmailAndPassword(
           email.value,
           password.value
         );
+        //get user info
+
+        const doc = await USER_COLLECTION.doc(user.uid).get();
+        store.commit("SET_USER", doc.data);
         router.replace("/");
       } catch (e) {
         switch (e.code) {
