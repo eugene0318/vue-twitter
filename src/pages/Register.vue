@@ -68,6 +68,7 @@ export default {
         const doc = USER_COLLECTION.doc(user.uid);
         await doc.set({
           uid: user.uid,
+          username: username.value,
           email: email,
           value,
           profile_image_url: "/profile.jpeg",

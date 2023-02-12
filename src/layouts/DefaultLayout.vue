@@ -11,7 +11,9 @@
         <div class="flex flex-col items-start">
           <router-link
             :to="route.path"
-            class="hover:text-primary hover:bg-lighter px-4 py-2 rounded-full cursor-pointer"
+            :class="`hover:text-primary hover:bg-lighter px-4 py-2 rounded-full cursor-pointer ${
+              router.currentRoute.value.name == route.name
+            }`"
             v-for="route in routes"
             :key="route"
           >
@@ -39,7 +41,7 @@
           class="hidden xl:flex mt-3 px-2 py-1 w-full h-12 rounded-full hover:bg-blue-50 justify-center"
         >
           <img
-            src="http://picsum.photos/100"
+            :src="uer.profile_image_url"
             class="w-10 h-10 rounded-full"
             alt=""
           />
@@ -71,8 +73,10 @@
       >
         <img src="http://picsum.photos/200" class="w-10 n-10 rounded-full" />
         <div class="ml-2">
-          <div class="fontb-bod text-sm">eugene@email.com</div>
-          <div class="text-left text-gray-500 text-sm">@eugene</div>
+          <div class="fontb-bod text-sm">{{ currentUser.email }}</div>
+          <div class="text-left text-gray-500 text-sm">
+            @{{ currentUser.username }}
+          </div>
           <i class="fas fa-check text-primary ml-auto"></i>
         </div>
       </button>
@@ -80,17 +84,18 @@
         class="hover:bg-gray-50 w-full text-left text-sm"
         @click="onLogOut"
       >
-        @eugene에서 로그아웃
+        @{{ currentUser.username }}에서 로그아웃
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import router from "../router";
 import { auth } from "../firebase";
 import store from "../store";
+import { log } from "console";
 // import Messages from "./pages/Messages.vue";
 // import Home from "./pages/Home.vue";
 //mport Profile from "./pages/Profile.vue";
@@ -100,15 +105,20 @@ export default {
     const routes = ref([]);
     const showProfileDropdown = ref(false);
 
+    const currentUser = computed(() => store.state.user);
+
     const onLogOut = async () => {
       await auth.signOut();
       store.commit("SET_USER", null);
       await router.replace("/login");
     };
     onBeforeMount(() => {
-      routes.value = router.options.routes;
+      routes.value = router.options.routes.filter(
+        (route) => route.meta.isMenu == true
+      );
+      //console.log(router.currentRoute.value);
     });
-    return { routes, showProfileDropdown, onLogOut };
+    return { routes, showProfileDropdown, onLogOut, currentUser, router };
   },
 };
 </script>
