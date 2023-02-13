@@ -25,9 +25,10 @@
             </div>
           </router-link>
         </div>
-        <!--twit button-->
+        <!--tweet button-->
         <div class="w-full xl:pr-3">
           <button
+            @click="showTweetModal = true"
             class="mt-3 bg-primary text-white xl:w-full w-12 h-12 rounded-full hover:bg-dark"
           >
             <span class="hidden xl:block">트윗</span>
@@ -87,6 +88,11 @@
         @{{ currentUser.username }}에서 로그아웃
       </button>
     </div>
+    <!-- tweet modal popup-->
+    <TweetModal
+      v-if="currentUser"
+      @close-modal="showTweetModal = false"
+    ></TweetModal>
   </div>
 </template>
 
@@ -96,6 +102,7 @@ import router from "../router";
 import { auth } from "../firebase";
 import store from "../store";
 import { log } from "console";
+import TweetModal from "../components/TweetModal.vue";
 // import Messages from "./pages/Messages.vue";
 // import Home from "./pages/Home.vue";
 //mport Profile from "./pages/Profile.vue";
@@ -106,6 +113,8 @@ export default {
     const showProfileDropdown = ref(false);
 
     const currentUser = computed(() => store.state.user);
+
+    const showTweetModal = ref(false);
 
     const onLogOut = async () => {
       await auth.signOut();
@@ -118,7 +127,14 @@ export default {
       );
       //console.log(router.currentRoute.value);
     });
-    return { routes, showProfileDropdown, onLogOut, currentUser, router };
+    return {
+      routes,
+      showProfileDropdown,
+      onLogOut,
+      currentUser,
+      router,
+      currentUser,
+    };
   },
 };
 </script>
