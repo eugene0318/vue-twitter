@@ -1,12 +1,10 @@
 <template lang="">
-  <!--main section-->
+  <!-- main part -->
   <div class="flex-1 border-r border-gray-100 overflow-y-auto">
     <div class="flex flex-col">
-      <!--page title -->
-      <div class="border-b border-gray-100 px-3 py-2 font-bold text-lg">
-        home
-      </div>
-      <!--tweeting section-->
+      <!-- page title -->
+      <div class="border-b border-gray-100 px-3 py-2 font-bold text-lg">홈</div>
+      <!-- tweeting section -->
       <div class="flex px-3 py-3 border-b-8 border-gray-100">
         <img
           :src="currentUser.profile_image_url"
@@ -15,12 +13,12 @@
         <div class="ml-2 flex-1 flex flex-col">
           <textarea
             v-model="tweetBody"
-            placeholder="무슨 일이 일어나고 있나요."
+            placeholder="무슨 일이 일어나고 있나요?"
             class="w-full text-lg font-bold focus:outline-none mb-3 resize-none"
           ></textarea>
           <div class="text-right">
             <button
-              v-if="tweetBody.value.length"
+              v-if="!tweetBody.length"
               class="bg-light text-sm font-bold text-white px-4 py-1 rounded-full"
             >
               트윗
@@ -35,16 +33,16 @@
           </div>
         </div>
       </div>
-      <!--tweets-->
+      <!-- tweets -->
       <Tweet
-        v-for="tweet in tweets"
+        :currentUser="currentUser"
         :tweet="tweet"
+        v-for="tweet in tweets"
         :key="tweet.id"
-        :currentUser="currentUset"
-      />>
+      />
     </div>
   </div>
-  <!--trend section-->
+  <!-- trend part -->
   <Trends />
 </template>
 <script>
