@@ -94,7 +94,7 @@
     </div>
     <trends></trends>
     <comment-modal
-      :tweet="tweet"
+      :eee="tweet"
       v-if="showCommentModal"
       @close-modal="showCommentModal = false"
     ></comment-modal>

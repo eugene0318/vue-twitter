@@ -104,13 +104,36 @@
 import { ref, computed } from "vue";
 import store from "../store";
 import moment from "moment";
+import { COMMENT_COLLECTION, TWEET_COLLECTION } from "../firebase";
+import firebase from "firebase";
+import { emit } from "process";
 export default {
   props: ["tweet"],
-  setup() {
+  setup(props) {
     const tweetBody = ref("");
     const currentUser = computed(() => {
       store.state.user;
     });
+
+    const onAddTweet = async () => {
+      try {
+        const doc = COMMENT_COLLECTION.doc();
+        await doc.set({
+          id: doc.id,
+          from_tweet_id: props.tweet.id,
+          comment_tweet_body: tweetBody.value,
+          uid: currentUser.value.uid,
+          created_at: Date.now(),
+        });
+        await TWEET_COLLECTION.doc(props.tweet.id).update({
+          num_comments: firebase.firestore.FieldValue.increment(1),
+        });
+
+        emit("close-modal");
+      } catch (e) {
+        console.log("on comment tweet error : ", e);
+      }
+    };
     return {
       tweetBody,
       moment,
