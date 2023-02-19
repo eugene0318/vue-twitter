@@ -6,6 +6,7 @@ import Profile from "../pages/Profile.vue";
 import Register from "../pages/Register.vue";
 import Login from "../pages/Login.vue";
 import store from "../store";
+import Tweet from "../pages/component/Tweet.vue";
 
 const routes = [
   {
@@ -92,6 +93,13 @@ const routes = [
     name: "login",
     component: Login,
     meta: { isMenu: false, layout: "EmptyLayout", requireAuth: true },
+  },
+  {
+    path: "/tweet/:id",
+    name: "tweet",
+    component: Tweet,
+    title: "더보기",
+    meta: { isMenu: false, layout: "DefaultLayout", requireAuth: true },
   },
 ];
 

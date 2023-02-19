@@ -1,4 +1,8 @@
-import { RETWEET_COLLECTION, USER_COLLECTION } from "../firebase";
+import {
+  RETWEET_COLLECTION,
+  LIKES_COLLECTION,
+  USER_COLLECTION,
+} from "../firebase";
 import { store } from "../store";
 export default async (tweet, currentUser) => {
   //adding user info
@@ -9,17 +13,30 @@ export default async (tweet, currentUser) => {
 
   //tweet = { ...tweet };
   //adding retweet info
-  const snapshot = await RETWEET_COLLECTION.where(
+  const retweetSnapshot = await RETWEET_COLLECTION.where(
     "from_tweet_if",
     "==",
     tweet.id
   )
     .where("uid", "==", currentUser.uid)
     .get();
-  if (snapshot.empty) {
+  if (retweetSnapshot.empty) {
     tweet.isRetweeted = false;
   } else {
     tweet.isRetweeted = true;
+  }
+  //adding likes info
+  const likeSnapshot = await LIKES_COLLECTION.where(
+    "from_tweet_if",
+    "==",
+    tweet.id
+  )
+    .where("uid", "==", currentUser.uid)
+    .get();
+  if (likeSnapshot.empty) {
+    tweet.isLiked = false;
+  } else {
+    tweet.isLiked = true;
   }
   return tweet;
 };
