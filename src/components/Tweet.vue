@@ -41,14 +41,17 @@
               class="far fa-comment text-gray-400 text-xl hover:bg-blue-50 hover:text-primary p-2 rounded-full h-10 w-10"
             ></i>
           </button>
-          <button @click="handleRetweet(tweet)">
+          <button
+            :class="${tweet.isRetweeted ? 'text-green-100':''}"
+            @click="handleRetweet(tweet)"
+          >
             <i
               v-if="tweet.isRetweeted"
               class="fas fa-retweet text-xl hover:bg-green-50 text-green-400 p-2 rounded-full h-10 w-10"
             ></i>
             <i
               v-else
-              class="fas fa-retweet text-gray-400 text-xl hover:bg-green-50 hover:text-green-400 p-2 rounded-full h-10 w-10"
+              class="fas fa-retwees text-gray-400 text-xl hover:bg-green-50 hover:text-green-400 p-2 rounded-full h-10 w-10"
             ></i>
           </button>
           <button @click="handleLikes(tweet)">
