@@ -74,6 +74,13 @@ const routes = [
     meta: { isMenu: true, layout: "DefaultLayout", requireAuth: true },
   },
   {
+    path: "/profile/:uid",
+    component: Profile,
+    icon: "fa-solid fa-user fa-fw text-2xl",
+
+    meta: { isMenu: false, layout: "DefaultLayout", requireAuth: true },
+  },
+  {
     path: "/more",
     name: "more",
     component: Profile,
