@@ -15,24 +15,55 @@
         </div>
       </div>
       <!--background image-->
-      <div class="bg-gray-200 h-40 relative">
+      <div class="bg-gray-200 h-48 relative flex-none">
+        <img
+          :src="profileUser.background_img_url"
+          class="w-full h-48 object-cover"
+        />>
         <!--profile image-->
         <div
           class="border-4 w-28 h-28 border-white bg-gray-100 w-28 h-28 rounded-full absolute -bottom-14"
         >
           <img
-            src="http://picsum.photos/200"
-            class="rounded-full opacity-90 hover:opacity-100 cursor-pointer"
+            :src="profileUser.profile_image_url"
+            class="w-full h-full rounded-full opacity-90 hover:opacity-100 cursor-pointer"
           />
         </div>
       </div>
       <!--profile edit button-->
-      <div class="text-right mt-2 mr-2">
-        <button
-          class="border-2 text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full"
-        >
-          프로필 수정
-        </button>
+      <div class="text-right mt-2 mr-2 h-14 relative">
+        <div v-if="currentUser.uid == profileUser.uid">
+          <button
+            @click="showProfileEditModal = true"
+            class="border-2 text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full"
+          >
+            프로필 수정
+          </button>
+        </div>
+        <div v-else>
+          <div
+            v-if="currentUser.followings.includes(profileUser.uid)"
+            @click="onUnFollow"
+          >
+            <button
+              class="absolute w-24 right-0 text-sm bg-primary text-white px-3 py-2 hover:opacity-0 font-bold rounded-full"
+            >
+              팔로잉
+            </button>
+            <button
+              class="absolute w-24 right-0 border-2 text-sm bg-red-400 border-primary text-primary px-3 py-2 opacity-0 hover:opacity-100 hover:bg-blue-50 font-bold rounded-full"
+            >
+              언팔로우
+            </button>
+          </div>
+          <div v-else @click="onFollow">
+            <button
+              class="absolute right-0 border-2 text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full"
+            >
+              프로필 수정
+            </button>
+          </div>
+        </div>
       </div>
       <!--user info-->
       <div class="mx-3 mt-2">
@@ -87,7 +118,10 @@
     </div>
     <!--trend section-->
     <Trends />
-    <prorile-edit-modal></prorile-edit-modal>
+    <prorile-edit-modal
+      v-if="showProfileEditModal"
+      @close-modal="showProfileEditModal = false"
+    ></prorile-edit-modal>
   </div>
 </template>
 <script>
@@ -100,7 +134,9 @@ import {
   LIKE_COLLECTION,
   RETWEET_COLLECTION,
   TWEET_COLLECTION,
+  USER_COLLECTION,
 } from "../firebase";
+import firebase from "firebase";
 import { useRoute } from "vue-router";
 import router from "../router";
 import ProfileEditModal from '../components/ProfileEditModal.vue'
@@ -108,6 +144,7 @@ export default {
   components: {
     Trends,
     Tweet,
+    ProfileEditModal
   },
   setup() {
     const currentUser = computed(() => store.state.user);
@@ -116,6 +153,7 @@ export default {
     const retweets = ref([]);
     const LikeTweets = ref([]);
     const currentTab = ref("tweet");
+    const showProfileEditModal = ref(false)
 
     onBeforeMount(async () => {
       const profileUID = route.params.uid ? currentUser.value.uid;
@@ -182,7 +220,27 @@ export default {
         });
     });
 
-    return { currentUser, router, tweets, currentTab, retweets, LikeTweets, profileUser };
+    const onUnFollow =async() =>{
+      await USER_COLLECTION.doc(currentUser.value.uid).update({
+        followings : firebase.firestore.FieldValue.arrayUnion(profileUser.value.uid)
+      })
+      await USER_COLLECTION.doc(profileUser.value.uid).update({
+        followers : firebase.firestore.FieldValue.arrayUnion(currentUser.value.uid)
+      })
+
+      store.commit("SET_FOLLOW", profileUser.value.uid)
+    }
+
+    const onUnFollow =async() =>{
+      await USER_COLLECTION.doc(currentUser.value.uid).update({
+        followings : firebase.firestore.FieldValue.arrayRemove(profileUser.value.uid)
+      })
+      await USER_COLLECTION.doc(profileUser.value.uid).update({
+        followers : firebase.firestore.FieldValue.arrayRemove(currentUser.value.uid)
+      })
+    }
+
+    return { onFollow,onUnFollow,showProfileEditModal,currentUser, router, tweets, currentTab, retweets, LikeTweets, profileUser };
   },
 };
 </script>

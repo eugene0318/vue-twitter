@@ -178,7 +178,6 @@ export default {
       if (!profileImageData.value && !backgroundImageData.value) {
         return;
       }
-
       if (profileImageData.value) {
         try {
           const uploadTask = await storage
@@ -190,7 +189,7 @@ export default {
           });
           store.commit("SET_PROFILE_IMAGE", url);
         } catch (e) {
-          console.log(`profile image data error:${e}`);
+          console.log(`profile image data error :${e}`);
         }
       }
 
@@ -205,11 +204,11 @@ export default {
           });
           store.commit("SET_BACKGROUND_IMAGE", url);
         } catch (e) {
-          console.log(`profile image data error:${e}`);
+          console.log(`background image data error :${e}`);
         }
       }
 
-      emit("close-modal");
+      emit(`close-modal`);
     };
 
     return {
