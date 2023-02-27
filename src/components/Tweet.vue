@@ -87,7 +87,12 @@ import Trends from "../components/Trends.vue";
 import router from "../router";
 import { onBeforeMount, ref, computed } from "vue";
 import store from "../store";
-import { COMMENT_COLLECTION, TWEET_COLEECTION } from "../firebase";
+import {
+  COMMENT_COLLECTION,
+  LIKE_COLLECTION,
+  TWEET_COLEECTION,
+  USER_COLLECTION,
+} from "../firebase";
 import { useRoute } from "vue-router";
 import getTweetInfo from "../utils/getTweetInfo";
 import moment from "moment";
@@ -105,6 +110,38 @@ export default {
     const showCommentModal = ref(false);
 
     const route = useRoute();
+
+    const onDeleteTweet = async (tweet) => {
+      if (confirm("정말로 트윗을 삭제하시겠습니까.")) {
+        //delete tweet
+        await TWEET_COLEECTION.doc(tweet.id).delte();
+        //delete comments
+        const commentSnapshot = await COMMENT_COLLECTION.where(
+          "from_tweet_id",
+          "==",
+          tweet.id
+        ).get();
+        commentSnapshot.docs.forEach(async (doc) => await doc.ref.delete());
+        //delete likes
+        const likeSnapshot = await LIKE_COLLECTION.where(
+          "from_tweet_id",
+          "==",
+          tweet.id
+        ).get();
+        likeSnapshot.docs.forEach(async (doc) => await doc.ref.delete());
+        //delete retweets
+        const retweetSnapshot = await RETWEET_COLLECTION.where(
+          "from_tweet_id",
+          "==",
+          tweet.id
+        ).get();
+        retweetSnapshot.docs.forEach(async (doc) => await doc.ref.delete());
+        //user collection - num_tweets (-1)
+        USER_COLLECTION.doc(tweet.uid).update({
+          num_tweets: firebase.firestore.FieldValue.increment(-1),
+        });
+      }
+    };
 
     const handleDeleteComment = async (comment) => {
       if (confirm("커멘트를 삭제하시겠습니까?")) {
@@ -152,6 +189,7 @@ export default {
       handleRetweet,
       handleLikes,
       handleDeleteComment,
+      onDeleteTweet,
     };
   },
 };
